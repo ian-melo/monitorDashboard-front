@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Information</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+        integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <script>
+        window.onload = function () {
+            
+        }
+
+        function goTo() {
+            var queryString = window.location.search;
+            var urlParams = new URLSearchParams(queryString);
+            var userId = urlParams.get('id')
+            window.location.href = 'department.html' + '?id=' + userId;
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="second-column">
+            <h2 class="title title-second">Info</h2>
+            <p class="description description-second">EventDash</p>
+            <img src="../img/foto.jpeg" alt="Foto" width="200" height="150">
+            <a href="index.html" class="btn btn-second">Logout</a>
+        </div>
+        <div class="second-column">
+            <a href="relatorioEventos.html" class="btn btn-second">Relatório Equipamentos</a>
+            <a href="relatorioAlarmes.html" class="btn btn-second">Relatório Eventos</a>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

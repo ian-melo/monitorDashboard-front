@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>EventDash</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+        integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, td, th {
+            border: 1px solid black;
+        }
+    </style>
+    <script>
+        var queryString = window.location.search;
+        var urlParams = new URLSearchParams(queryString);
+        var userId = urlParams.get('id')
+
+        function sendForm() {
+            var data_inicio = document.getElementById('data_inicio').value;
+            var data_fim = document.getElementById('data_fim').value;
+            if (data_inicio === '' || data_inicio === null || data_inicio === undefined
+                    || data_fim === '' || data_fim === null || data_fim === undefined) {
+                window.alert("Dados incompletos.");
+                return;
+            }
+            data_inicio = data_inicio.split('-')[2]+'-'+data_inicio.split('-')[1]+'-'+data_inicio.split('-')[0];
+            data_fim = data_fim.split('-')[2]+'-'+data_fim.split('-')[1]+'-'+data_fim.split('-')[0];
+            
+            var fetchData = {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            }
+
+            fetch("http://localhost:8080/api/alarmes/v1/"+data_inicio+"/"+data_fim, fetchData).then(
+                function (response) {
+                    if (response.status !== 200) {
+                        alert("Error.")
+                        return;
+                    }
+                    response.text().then(function (data) {
+                        var json = JSON.parse(data);
+
+                        var innerTable = '<tr><th>Descrição</th><th>Quantidade</th></tr>';
+                        for(i=0; i < json.content.length; i++) {
+                            innerTable += '<tr><td>'+json.content[i].descricao+'</td><td>'+json.content[i].quantidade+'</td></tr>';
+                        }
+                        document.getElementById('resp_table').innerHTML=innerTable;
+                    });
+                })
+        }
+
+        function goTo() {
+            window.location.href = 'information.html' + '?id=' + userId;
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="second-column">
+        <h2 class="title title-second">EventDash - Relatório de Eventos</h2>
+
+        <form class="form">
+            <label class="label-input" for="">
+                <input id="data_inicio" type="date">
+              </label>
+
+            <label class="label-input" for="">
+                <i class="icon-modify"></i>
+                <input id="data_fim" type="date">
+            </label>
+            <button type="button" onclick="sendForm()" class="btn btn-second" id="post">Enviar</button>
+            <button type="button" onclick="goTo()" class="btn btn-second" id="post">Voltar</button>
+            <a href="index.html" class="btn btn-second">Logout</a>
+        </form>
+
+        <table id="resp_table">
+
+        </table>
+    </div>
+</body>
+
+</html>
